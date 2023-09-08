@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -104,7 +105,7 @@ while True:
         break
     season_urls.append(url)
 
-# Create a list to store all episode links and names
+# Create a list to store all episode links, names, and episode numbers
 all_episodes = []
 
 for season_url in season_urls:
@@ -123,16 +124,17 @@ for season_url in season_urls:
                 
                 print(f"Show: {show_name}, Season {season_number} ({season_name}) Episodes:")
                 for index, (episode_name, link) in enumerate(season_episodes, start=1):
-                    print(f"Episode {index} - {episode_name}")
-                    all_episodes.append((show_name, season_number, episode_name, link))
+                    episode_number = index
+                    print(f"Episode {episode_number} - {episode_name}")
+                    all_episodes.append((show_name, season_number, episode_number, episode_name, link))
             else:
                 print(f"No episode links found for Show: {show_name}, Season {data_tab_value} ({data_tab_value}).")
     else:
         print("Failed to extract data-tab values and show name from the provided URL.")
 
-# Write all episode links and names to a text file
+# Write all episode links, names, and episode numbers to a text file
 with open("episode_links.txt", "w") as file:
-    for show_name, season_number, episode_name, link in all_episodes:
-        file.write(f"Show: {show_name}, Season {season_number}, Episode {episode_name}, M3U8 Link: {link}\n")
+    for show_name, season_number, episode_number, episode_name, link in all_episodes:
+        file.write(f"Show: {show_name}, Season {season_number}, Episode {episode_number}, {episode_name}, M3U8 Link: {link}\n")
 
-print("All episode links and names have been exported to episode_links.txt.")
+print("All episode links, names, and episode numbers have been exported to episode_links.txt.")
